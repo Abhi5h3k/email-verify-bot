@@ -9,12 +9,13 @@ import time
 import yaml
 import json
 
-
+import logging
 
 
 class VerifyEmail:
 
     def __init__(self):
+        log = logging.getLogger('my_logger')
         try:
             # select domain to work on
             domain_names = {'1': "aol.com", '2': "yahoo.com",
@@ -61,8 +62,10 @@ class VerifyEmail:
 
         except Exception as e:
             print(e)
+            log.error(e)
 
     def aol_runner(self):
+        log = logging.getLogger('my_logger')
         try:
             print("Running for aol:")
 
@@ -106,20 +109,23 @@ class VerifyEmail:
                     # print(error_field.text)
                     print(f'{email} PASS')
                     email_pass.append(email)
+                    self.write_to_file(email, 'aol_email_pass')
                 else:
                     print(f'{email} FAIL')
                     email_fail.append(email)
+                    self.write_to_file(email, 'aol_email_fail')
 
             print(f"Total Email Pass : {len(email_pass)}")
             print(f"Total Email Fail : {len(email_fail)}")
 
-            self.write_to_file(email_pass, 'aol_email_pass')
-            self.write_to_file(email_fail, 'aol_email_fail')
+            
 
         except Exception as e:
             print(e)
+            log.error(e)
     
     def yahoo_runner(self):
+        log = logging.getLogger('my_logger')
         try:
             print("Running for yahoo:")
             url = self.config_json["url"]
@@ -161,20 +167,23 @@ class VerifyEmail:
                     # print(error_field.text)
                     print(f'{email} PASS')
                     email_pass.append(email)
+                    self.write_to_file(email, 'yahoo_email_pass')
                 else:
                     print(f'{email} FAIL')
                     email_fail.append(email)
+                    self.write_to_file(email, 'yahoo_email_fail')
 
             print(f"Total Email Pass : {len(email_pass)}")
             print(f"Total Email Fail : {len(email_fail)}")
 
-            self.write_to_file(email_pass, 'yahoo_email_pass')
-            self.write_to_file(email_fail, 'yahoo_email_fail')
+            
 
         except Exception as e:
             print(e)
+            log.error(e)
 
     def comcast_runner(self):
+        log = logging.getLogger('my_logger')
         try:
             print("Running for comcast:")
             url = self.config_json["url"]
@@ -218,9 +227,12 @@ class VerifyEmail:
                     if(error_field.text == self.config_json["on_error_text"]):
                         print(f'{email} FAIL')
                         email_fail.append(email)
+                        self.write_to_file(email, 'comcast_email_fail')
+
                 except NoSuchElementException:
                     print(f'{email} PASS')
                     email_pass.append(email)
+                    self.write_to_file(email, 'comcast_email_pass')
                     time.sleep(5)
                     try:
                         reload_field = driver.find_element(
@@ -239,23 +251,27 @@ class VerifyEmail:
             print(f"Total Email Pass : {len(email_pass)}")
             print(f"Total Email Fail : {len(email_fail)}")
 
-            self.write_to_file(email_pass, 'yahoo_email_pass')
-            self.write_to_file(email_fail, 'yahoo_email_fail')
+            
 
         except Exception as e:
             print(e)
-            input()
+            log.error(e)
             
 
     def write_to_file(self, result_list, f_name):
-        import time
-        timestr = time.strftime("%Y%m%d-%H%M%S")
-        with open(f'./output/{f_name}_{timestr}_.txt', 'w') as fp:
-            for item in result_list:
-                # write each item on a new line
-                fp.write("%s\n" % item)
+        log = logging.getLogger('my_logger')
+        try:
+            import time
+            timestr = time.strftime("%Y%m%d")
+            with open(f'./output/{f_name}_{timestr}_.txt', 'a') as fp:
+                # for item in result_list:
+                #         # write each item on a new line
+                #     fp.write("%s\n" % item)
+                fp.write(f'{result_list}\n')
 
-        print(f'\nWritten to File : {f_name}')
+            print(f'\nWritten to File : {f_name}')
+        except Exception as e:
+            log.error(e)
 
 
 def print_author(msg):
@@ -270,6 +286,8 @@ def print_author(msg):
         print("\n" * 5)    
 
 if __name__ == '__main__':
+    from logger import Logger
+    Logger()
     print_author("Verify email for multiple domains (yahoo, aol , comcast...)")
     VerifyEmail()
 
