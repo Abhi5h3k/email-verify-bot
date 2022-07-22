@@ -1,0 +1,5 @@
+{
+    "url" : "https://login.yahoo.com/account/create?.intl=in&.lang=en-IN&src=mc&done=https%3A%2F%2Flogin.yahoo.com%2Fmyaccount%2Fsecurity%2F%3F.intl%3Din%26.lang%3Den-IN%26src%3Dyhelp%26.scrumb%3D0&specId=yidregsimplified",
+    "on_error_text1" : "A Yahoo account already exists with this email address. Sign in.",
+    "on_error_text2" : "This email address is not available for sign-up. Try something else."
+} 

