@@ -4,6 +4,9 @@
 
 check multiple domain email list. ex: AOL, YAHOO, COMCAST for learning.
 
+# 🔥V2 color console + progress bar
+![color console](https://media.giphy.com/media/jCmB7bVM3orrBuzlFi/giphy.gif)
+
 # Yahoo 
 ![yahoo email bot](https://media.giphy.com/media/D1XnCQHa1DCbmDK4nf/giphy.gif)
 
