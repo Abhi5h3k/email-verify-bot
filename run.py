@@ -17,6 +17,8 @@ class VerifyEmail:
     def __init__(self):
         log = logging.getLogger('my_logger')
         try:
+            self.sleep = int(input('Enter delay in sec (default 5): ') or 5)
+            print(f'Delay : {self.sleep}')
             # select domain to work on
             domain_names = {'1': "aol.com", '2': "yahoo.com",
                             '3': "xfinity.com (comcast)"}
@@ -101,7 +103,7 @@ class VerifyEmail:
                 uemail_field.clear()
                 uemail_field.send_keys(uname)
                 password_field.click()
-                time.sleep(10)
+                time.sleep(5)
                 error_field = driver.find_element(
                     "xpath", "//*[@id='reg-error-yid']")
              
@@ -160,7 +162,7 @@ class VerifyEmail:
                 uemail_field.clear()
                 uemail_field.send_keys(uname)
                 password_field.click()
-                time.sleep(10)
+                time.sleep(self.sleep)
                 error_field = driver.find_element(
                     "xpath", "//*[@id='reg-error-userId']")
                 if(error_field.text == self.config_json["on_error_text1"] or error_field.text == self.config_json["on_error_text2"]):
@@ -218,7 +220,7 @@ class VerifyEmail:
                 uemail_field.clear()
                 uemail_field.send_keys(uname)
                 password_field.click()
-                time.sleep(10)
+                time.sleep(self.sleep)
                 from selenium.common.exceptions import NoSuchElementException        
 
                 try:
@@ -233,7 +235,7 @@ class VerifyEmail:
                     print(f'{email} PASS')
                     email_pass.append(email)
                     self.write_to_file(email, 'comcast_email_pass')
-                    time.sleep(5)
+                    time.sleep(self.sleep)
                     try:
                         reload_field = driver.find_element(
                                 "xpath", "/html/body/main/div[2]/prism-box/form/prism-button[3]/a/prism-text")
@@ -243,8 +245,8 @@ class VerifyEmail:
                             print("\nemail compromised")
                             driver.back()
                             driver.refresh()
-                            time.sleep(5)
-                    time.sleep(5)
+                            time.sleep(self.sleep)
+                    time.sleep(self.sleep)
                 
                 
                 
