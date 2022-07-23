@@ -1,3 +1,4 @@
+from turtle import st
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
@@ -11,12 +12,20 @@ import json
 
 import logging
 
+from rich.progress import track
+from rich.console import Console
+from rich.panel import Panel
+from rich.progress import Progress
+
+
 
 class VerifyEmail:
 
     def __init__(self):
         log = logging.getLogger('my_logger')
         try:
+            
+            self.console = Console()
             self.sleep = int(input('Enter delay in sec (default 5): ') or 5)
             print(f'Delay : {self.sleep}')
             # select domain to work on
@@ -80,44 +89,50 @@ class VerifyEmail:
 
             email_pass = []
             email_fail = []
-            for index, email in enumerate(self.data_list):
-                # if(index > 9):
-                #     break
-                # else:
-                #     time.sleep(10)
+            with Progress() as progress:
+                task1 = progress.add_task("[red]Working...", total=len(self.data_list))
 
-                uname = email.split("@")[0]
-                uname_domain = email.split("@")[1]
+                for index, email in (enumerate(self.data_list)):
+                    # if(index > 9):
+                    #     break
+                    # else:
+                    #     time.sleep(10)
+                    progress.update(task1, advance=1)
 
-                if(uname_domain != 'aol.com'):
-                    print(f"\n===skip check for domain : {uname_domain}===")
-                    continue
+                    uname = email.split("@")[0]
+                    uname_domain = email.split("@")[1]
 
-                print(f"{index} check : {uname}")
-                wait.until(EC.element_to_be_clickable(
-                    (By.XPATH, "//input[@name='yid']")))
-                uemail_field = driver.find_element(
-                    "xpath", "//input[@name='yid']")
-                wait.until(EC.element_to_be_clickable(
-                    (By.XPATH, "//input[@name='firstName']")))
-                firstName_field = driver.find_element(
-                    "xpath", "//input[@name='firstName']")
-                uemail_field.clear()
-                uemail_field.send_keys(uname)
-                firstName_field.click()
-                time.sleep(5)
-                error_field = driver.find_element(
-                    "xpath", "//*[@id='reg-error-yid']")
-             
-                if(error_field.text == self.config_json["on_error_text1"] or error_field.text == self.config_json["on_error_text2"]):
-                    # print(error_field.text)
-                    print(f'{email} PASS')
-                    email_pass.append(email)
-                    self.write_to_file(email, 'aol_email_pass')
-                else:
-                    print(f'{email} FAIL')
-                    email_fail.append(email)
-                    self.write_to_file(email, 'aol_email_fail')
+                    if(uname_domain != 'aol.com'):
+                        print(f"\n===skip check for domain : {uname_domain}===")
+                        continue
+
+                    print(f"{index} check : {uname}")
+                    wait.until(EC.element_to_be_clickable(
+                        (By.XPATH, "//input[@name='yid']")))
+                    uemail_field = driver.find_element(
+                        "xpath", "//input[@name='yid']")
+                    wait.until(EC.element_to_be_clickable(
+                        (By.XPATH, "//input[@name='firstName']")))
+                    firstName_field = driver.find_element(
+                        "xpath", "//input[@name='firstName']")
+                    uemail_field.clear()
+                    uemail_field.send_keys(uname)
+                    firstName_field.click()
+                    time.sleep(5)
+                    error_field = driver.find_element(
+                        "xpath", "//*[@id='reg-error-yid']")
+                
+                    if(error_field.text == self.config_json["on_error_text1"] or error_field.text == self.config_json["on_error_text2"]):
+                        # print(error_field.text)
+                        self.console.print(f'\n{email} [green1]PASS')
+                        email_pass.append(email)
+                        self.write_to_file(email, 'aol_email_pass')
+                    else:
+                        self.console.print(f'\n{email} [deep_pink4]FAIL')
+                        email_fail.append(email)
+                        self.write_to_file(email, 'aol_email_fail')
+                    
+                    
 
             print(f"Total Email Pass : {len(email_pass)}")
             print(f"Total Email Fail : {len(email_fail)}")
@@ -141,43 +156,47 @@ class VerifyEmail:
 
             email_pass = []
             email_fail = []
-            for index, email in enumerate(self.data_list):
-                # if(index > 3):
-                #     break
-                # else:
-                #     time.sleep(10)
+            with Progress() as progress:
+                task1 = progress.add_task("[red]Working...", total=len(self.data_list))
 
-                uname = email.split("@")[0]
-                uname_domain = email.split("@")[1]
+                for index, email in enumerate(self.data_list):
+                    # if(index > 3):
+                    #     break
+                    # else:
+                    #     time.sleep(10)
+                    progress.update(task1, advance=1)
 
-                if(uname_domain != 'yahoo.com'):
-                    print(f"\n===skip check for domain : {uname_domain}===")
-                    continue
+                    uname = email.split("@")[0]
+                    uname_domain = email.split("@")[1]
 
-                print(f"{index} check : {uname}")
-                wait.until(EC.element_to_be_clickable(
-                    (By.XPATH, "//input[@name='userId']")))
-                uemail_field = driver.find_element(
-                    "xpath", "//input[@name='userId']")
-                wait.until(EC.element_to_be_clickable(
-                    (By.XPATH, "//input[@name='firstName']")))
-                firstName_field = driver.find_element(
-                    "xpath", "//input[@name='firstName']")
-                uemail_field.clear()
-                uemail_field.send_keys(uname)
-                firstName_field.click()
-                time.sleep(self.sleep)
-                error_field = driver.find_element(
-                    "xpath", "//*[@id='reg-error-userId']")
-                if(error_field.text == self.config_json["on_error_text1"] or error_field.text == self.config_json["on_error_text2"]):
-                    # print(error_field.text)
-                    print(f'{email} PASS')
-                    email_pass.append(email)
-                    self.write_to_file(email, 'yahoo_email_pass')
-                else:
-                    print(f'{email} FAIL')
-                    email_fail.append(email)
-                    self.write_to_file(email, 'yahoo_email_fail')
+                    if(uname_domain != 'yahoo.com'):
+                        print(f"\n===skip check for domain : {uname_domain}===")
+                        continue
+
+                    print(f"{index} check : {uname}")
+                    wait.until(EC.element_to_be_clickable(
+                        (By.XPATH, "//input[@name='userId']")))
+                    uemail_field = driver.find_element(
+                        "xpath", "//input[@name='userId']")
+                    wait.until(EC.element_to_be_clickable(
+                        (By.XPATH, "//input[@name='firstName']")))
+                    firstName_field = driver.find_element(
+                        "xpath", "//input[@name='firstName']")
+                    uemail_field.clear()
+                    uemail_field.send_keys(uname)
+                    firstName_field.click()
+                    time.sleep(self.sleep)
+                    error_field = driver.find_element(
+                        "xpath", "//*[@id='reg-error-userId']")
+                    if(error_field.text == self.config_json["on_error_text1"] or error_field.text == self.config_json["on_error_text2"]):
+                        # print(error_field.text)
+                        self.console.print(f'\n{email} [green1]PASS')
+                        email_pass.append(email)
+                        self.write_to_file(email, 'yahoo_email_pass')
+                    else:
+                        self.console.print(f'\n{email} [deep_pink4]FAIL')
+                        email_fail.append(email)
+                        self.write_to_file(email, 'yahoo_email_fail')
 
             print(f"Total Email Pass : {len(email_pass)}")
             print(f"Total Email Fail : {len(email_fail)}")
@@ -201,56 +220,61 @@ class VerifyEmail:
 
             email_pass = []
             email_fail = []
-            for index, email in enumerate(self.data_list):
-                # if(index > 9):
-                #     break
-                # else:
-                #     time.sleep(10)
 
-                uname = email.split("@")[0]
-                uname_domain = email.split("@")[1]
+            with Progress() as progress:
+                task1 = progress.add_task("[red]Working...", total=len(self.data_list))
 
-                if(uname_domain != 'comcast.net'):
-                    print(f"\n===skip check for domain : {uname_domain}===")
-                    continue
+                for index, email in enumerate(self.data_list):
+                    # if(index > 9):
+                    #     break
+                    # else:
+                    #     time.sleep(10)
+                    progress.update(task1, advance=1)
+                    
+                    uname = email.split("@")[0]
+                    uname_domain = email.split("@")[1]
 
-                print(f"{index} check : {uname}")
-                wait.until(EC.element_to_be_clickable(
-                    (By.XPATH, "//input[@name='user']")))
-                uemail_field = driver.find_element(
-                    "xpath", "//input[@name='user']")
-                password_field = driver.find_element(
-                    "xpath", "//button[@type='submit']")
-                uemail_field.clear()
-                uemail_field.send_keys(uname)
-                password_field.click()
-                time.sleep(self.sleep)
-                from selenium.common.exceptions import NoSuchElementException        
+                    if(uname_domain != 'comcast.net'):
+                        print(f"\n===skip check for domain : {uname_domain}===")
+                        continue
 
-                try:
-                    error_field = driver.find_element(
-                    "xpath", "/html/body/main/div[2]/prism-box/form/prism-input/span[2]/prism-text")
-                    if(error_field.text == self.config_json["on_error_text"]):
-                        print(f'{email} FAIL')
-                        email_fail.append(email)
-                        self.write_to_file(email, 'comcast_email_fail')
-
-                except NoSuchElementException:
-                    print(f'{email} PASS')
-                    email_pass.append(email)
-                    self.write_to_file(email, 'comcast_email_pass')
+                    print(f"{index} check : {uname}")
+                    wait.until(EC.element_to_be_clickable(
+                        (By.XPATH, "//input[@name='user']")))
+                    uemail_field = driver.find_element(
+                        "xpath", "//input[@name='user']")
+                    password_field = driver.find_element(
+                        "xpath", "//button[@type='submit']")
+                    uemail_field.clear()
+                    uemail_field.send_keys(uname)
+                    password_field.click()
                     time.sleep(self.sleep)
+                    from selenium.common.exceptions import NoSuchElementException        
+
                     try:
-                        reload_field = driver.find_element(
-                                "xpath", "/html/body/main/div[2]/prism-box/form/prism-button[3]/a/prism-text")
-                        reload_field.click()
+                        error_field = driver.find_element(
+                        "xpath", "/html/body/main/div[2]/prism-box/form/prism-input/span[2]/prism-text")
+                        if(error_field.text == self.config_json["on_error_text"]):
+                            self.console.print(f'\n{email} [deep_pink4]FAIL')
+                            email_fail.append(email)
+                            self.write_to_file(email, 'comcast_email_fail')
+
                     except NoSuchElementException:
-                        if self.config_json["compromised"] in driver.current_url:
-                            print("\nemail compromised")
-                            driver.back()
-                            driver.refresh()
-                            time.sleep(self.sleep)
-                    time.sleep(self.sleep)
+                        self.console.print(f'\n{email} [green1]PASS')
+                        email_pass.append(email)
+                        self.write_to_file(email, 'comcast_email_pass')
+                        time.sleep(self.sleep)
+                        try:
+                            reload_field = driver.find_element(
+                                    "xpath", "/html/body/main/div[2]/prism-box/form/prism-button[3]/a/prism-text")
+                            reload_field.click()
+                        except NoSuchElementException:
+                            if self.config_json["compromised"] in driver.current_url:
+                                print("\nemail compromised")
+                                driver.back()
+                                driver.refresh()
+                                time.sleep(self.sleep)
+                        time.sleep(self.sleep)
                 
                 
                 
@@ -275,7 +299,7 @@ class VerifyEmail:
                 #     fp.write("%s\n" % item)
                 fp.write(f'{result_list}\n')
 
-            print(f'\nWritten to File : {f_name}')
+            print(Panel(f'\nWritten to File : [green]{f_name}'))
         except Exception as e:
             log.error(e)
 
