@@ -76,7 +76,7 @@ class VerifyEmail:
                 executable_path="./driver/chromedriver.exe", use_subprocess=True)
             driver.get(url)
 
-            wait = WebDriverWait(driver, 10)
+            wait = WebDriverWait(driver, self.sleep)
 
             email_pass = []
             email_fail = []
@@ -98,11 +98,13 @@ class VerifyEmail:
                     (By.XPATH, "//input[@name='yid']")))
                 uemail_field = driver.find_element(
                     "xpath", "//input[@name='yid']")
-                password_field = driver.find_element(
-                    "xpath", "//input[@name='password']")
+                wait.until(EC.element_to_be_clickable(
+                    (By.XPATH, "//input[@name='firstName']")))
+                firstName_field = driver.find_element(
+                    "xpath", "//input[@name='firstName']")
                 uemail_field.clear()
                 uemail_field.send_keys(uname)
-                password_field.click()
+                firstName_field.click()
                 time.sleep(5)
                 error_field = driver.find_element(
                     "xpath", "//*[@id='reg-error-yid']")
@@ -135,7 +137,7 @@ class VerifyEmail:
                 executable_path="./driver/chromedriver.exe", use_subprocess=True)
             driver.get(url)
 
-            wait = WebDriverWait(driver, 10)
+            wait = WebDriverWait(driver, self.sleep)
 
             email_pass = []
             email_fail = []
@@ -157,11 +159,13 @@ class VerifyEmail:
                     (By.XPATH, "//input[@name='userId']")))
                 uemail_field = driver.find_element(
                     "xpath", "//input[@name='userId']")
-                password_field = driver.find_element(
-                    "xpath", "//input[@name='password']")
+                wait.until(EC.element_to_be_clickable(
+                    (By.XPATH, "//input[@name='firstName']")))
+                firstName_field = driver.find_element(
+                    "xpath", "//input[@name='firstName']")
                 uemail_field.clear()
                 uemail_field.send_keys(uname)
-                password_field.click()
+                firstName_field.click()
                 time.sleep(self.sleep)
                 error_field = driver.find_element(
                     "xpath", "//*[@id='reg-error-userId']")
@@ -193,7 +197,7 @@ class VerifyEmail:
                 executable_path="./driver/chromedriver.exe", use_subprocess=True)
             driver.get(url)
 
-            wait = WebDriverWait(driver, 10)
+            wait = WebDriverWait(driver, self.sleep)
 
             email_pass = []
             email_fail = []
