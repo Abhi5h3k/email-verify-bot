@@ -17,6 +17,8 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.progress import Progress
 
+import os
+
 
 
 class VerifyEmail:
@@ -24,7 +26,8 @@ class VerifyEmail:
     def __init__(self):
         log = logging.getLogger('my_logger')
         try:
-            
+            os.makedirs(os.path.dirname('./output/'), exist_ok=True)
+
             self.console = Console()
             self.sleep = int(input('Enter delay in sec (default 5): ') or 5)
             print(f'Delay : {self.sleep}')
@@ -45,7 +48,7 @@ class VerifyEmail:
             # self.input_file_name = 'abhi.txt'
             # read file data into list
             with open(self.input_file_name) as f:
-                self.data_list = [line.rstrip() for line in f]
+                self.data_list = [line.rstrip() for line in f if line.rstrip()]
             print(f'\nTotal records in file : {len(self.data_list)}')
 
             if(len(self.data_list)):
@@ -136,6 +139,8 @@ class VerifyEmail:
 
             print(f"Total Email Pass : {len(email_pass)}")
             print(f"Total Email Fail : {len(email_fail)}")
+            log.info(f"Total Email Pass : {len(email_pass)}")
+            log.info(f"Total Email Fail : {len(email_fail)}")
 
             
 
@@ -200,7 +205,8 @@ class VerifyEmail:
 
             print(f"Total Email Pass : {len(email_pass)}")
             print(f"Total Email Fail : {len(email_fail)}")
-
+            log.info(f"Total Email Pass : {len(email_pass)}")
+            log.info(f"Total Email Fail : {len(email_fail)}")
             
 
         except Exception as e:
@@ -280,6 +286,8 @@ class VerifyEmail:
                 
             print(f"Total Email Pass : {len(email_pass)}")
             print(f"Total Email Fail : {len(email_fail)}")
+            log.info(f"Total Email Pass : {len(email_pass)}")
+            log.info(f"Total Email Fail : {len(email_fail)}")
 
             
 
@@ -298,8 +306,9 @@ class VerifyEmail:
                 #         # write each item on a new line
                 #     fp.write("%s\n" % item)
                 fp.write(f'{result_list}\n')
-
-            print(Panel(f'\nWritten to File : [green]{f_name}'))
+            
+            print(f'\nWritten to File : \033[32;1m{f_name}\033[0m')
+          
         except Exception as e:
             log.error(e)
 
