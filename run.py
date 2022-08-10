@@ -39,7 +39,11 @@ class VerifyEmail:
             self.domain = input("Select Domain: ")
             # self.domain = "3"
             print(f"\nWorking on domain : {domain_names[self.domain]}")
-
+            self.skip_other_domain = input("Skip other Domain [default True]: ") or "True"
+           
+            if self.skip_other_domain != "True" and self.skip_other_domain != "False":
+                self.skip_other_domain = "True"
+            print(f'skip_other_domain = {self.skip_other_domain}')
             # input data file name
             self.input_file_name = input(
                 "\nEnter input text filename with extension: ")
@@ -105,9 +109,10 @@ class VerifyEmail:
                     uname = email.split("@")[0]
                     uname_domain = email.split("@")[1]
 
-                    if(uname_domain != 'aol.com'):
-                        print(f"\n===skip check for domain : {uname_domain}===")
-                        continue
+                    if self.skip_other_domain == "True":
+                        if(uname_domain != 'aol.com'):
+                            print(f"\n===skip check for domain : {uname_domain}===")
+                            continue
 
                     print(f"{index} check : {uname}")
                     wait.until(EC.element_to_be_clickable(
@@ -174,9 +179,10 @@ class VerifyEmail:
                     uname = email.split("@")[0]
                     uname_domain = email.split("@")[1]
 
-                    if(uname_domain != 'yahoo.com'):
-                        print(f"\n===skip check for domain : {uname_domain}===")
-                        continue
+                    if self.skip_other_domain == "True":
+                        if(uname_domain != 'yahoo.com'):
+                            print(f"\n===skip check for domain : {uname_domain}===")
+                            continue
 
                     print(f"{index} check : {uname}")
                     wait.until(EC.element_to_be_clickable(
@@ -240,9 +246,10 @@ class VerifyEmail:
                     uname = email.split("@")[0]
                     uname_domain = email.split("@")[1]
 
-                    if(uname_domain != 'comcast.net'):
-                        print(f"\n===skip check for domain : {uname_domain}===")
-                        continue
+                    if self.skip_other_domain == "True":
+                        if(uname_domain != 'comcast.net'):
+                            print(f"\n===skip check for domain : {uname_domain}===")
+                            continue
 
                     print(f"{index} check : {uname}")
                     wait.until(EC.element_to_be_clickable(
