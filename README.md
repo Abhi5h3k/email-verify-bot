@@ -7,6 +7,7 @@ check multiple domain email list. ex: AOL, YAHOO, COMCAST for learning.
 # setup:
 1. Install Python 3.10.6
 2. pip install -r requirements.txt
+3. Built exe using : pyinstaller --onefile run.py
 # 🔥V2 color console + progress bar
 ![color console](https://media.giphy.com/media/jCmB7bVM3orrBuzlFi/giphy.gif)
 
