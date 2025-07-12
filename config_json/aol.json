@@ -1,5 +1,7 @@
 {
     "url" : "https://login.aol.com/account/create?src=mc&done=https%3A%2F%2Flogin.aol.com%2Fmyaccount%2Fsecurity%2F%3F.scrumb%3D0&specId=yidReg",
     "on_error_text1" : "An AOL account already exists with this email address. Sign in.",
-    "on_error_text2" : "This email address is not available for sign up, try something else"
+    "on_error_text2" : "This email address is not available for sign up, try something else",
+    "email_xpath" : "//*[@id='usernamereg-userId']",
+    "email_error_xpath" : "//*[@id='reg-error-userId']"
 } 

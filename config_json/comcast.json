@@ -2,5 +2,8 @@
 {
     "url" : "https://login.xfinity.com/login",
     "on_error_text" : "The Xfinity ID or password you entered was incorrect. Please try again.",
-    "compromised": "compromised_uid.html"
+    "compromised": "compromised_uid.html",
+    "email_xpath": "//*[@id='user']",
+    "submit_btn_xpath": "//*[@id='sign_in']",
+    "error_field_xpath": "//*[@id='user-hint']"
 } 
